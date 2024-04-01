@@ -1,1 +1,5 @@
 ignored/
+cookies/
+__pycache__/
+chromedriver.exe
+ideas
