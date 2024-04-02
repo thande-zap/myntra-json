@@ -1,5 +1,13 @@
-ignored/
-cookies/
+# Python related
 __pycache__/
-chromedriver.exe
+.venv/
+
+# Testing and cookies directories
+testing/
+db/cookies
+
+# JavaScript related
+/js/node_modules/
+
+# Miscellaneous
 ideas
