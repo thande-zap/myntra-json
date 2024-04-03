@@ -11,9 +11,9 @@ import json
 import re
 
 
-with open("cookies/cookies.json", "r") as f:
+with open("db/cookies/cookies.json", "r") as f:
     data = json.load(f)
-with open("cookies/cookies.pkl", "wb") as f:
+with open("db/cookies/cookies.pkl", "wb") as f:
     pickle.dump(data, f)
 
 url = "https://www.myntra.com/accessories?f=Categories%3AGold%20Coin"
@@ -31,7 +31,7 @@ driver = webdriver.Chrome(
 driver.get(url)
 
 
-cookies = pickle.load(open("cookies/cookies.pkl", "rb"))
+cookies = pickle.load(open("db/cookies/cookies.pkl", "rb"))
 
 for cookie in cookies:
     cookie["domain"] = ".myntra.com"
@@ -70,19 +70,21 @@ def extract_karat(text):
 
 data = content["searchData"]["results"]["products"]
 
-productName = [
-    {
-        "Sr.": index,
-        "name": name,
-        "purity": extract_karat(name),
-        "weight": extract_numbers(name),
-        "price": item["price"],
-        "inventory": item["inventoryInfo"][0]["inventory"],
-    }
-    for index, item in enumerate(data, start=1)
-    for name in [item["productName"]]
-]
+productName = []
+for index, item in enumerate(data):
+    name = item["productName"]
+    productName.append(
+        {
+            "Sr.": index + 1,
+            "Name": name,
+            "Purity": extract_karat(name),
+            "Weight": extract_numbers(name),
+            "Price": item["price"],
+            "Inventory": item["inventoryInfo"][0]["inventory"],
+        }
+    )
 
-with open("db/products.csv", "w") as file:
+
+with open("db/products.csv", "w", newline="") as file:
     df = pd.DataFrame(productName)
     df.to_csv(file, index=False)
