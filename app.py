@@ -14,6 +14,7 @@ def app():
 
     if st.button("Refresh"):
         scrapper()
+        df = pd.read_csv("db/products.csv")
 
     st.sidebar.header("Filter")
     weights = st.sidebar.multiselect(
