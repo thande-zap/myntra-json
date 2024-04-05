@@ -10,11 +10,11 @@ def app():
         layout="wide",
         page_icon=":money_bag:",
     )
-    df = pd.read_csv("db/products.csv")
+    df = pd.read_parquet("db/products.parquet")
 
     if st.button("Refresh"):
         scrapper()
-        df = pd.read_csv("db/products.csv")
+        df = pd.read_parquet("db/products.parquet")
 
     st.sidebar.header("Filter")
     weights = st.sidebar.multiselect(

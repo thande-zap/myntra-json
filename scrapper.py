@@ -1,7 +1,6 @@
 def scrapper():
     from selenium import webdriver
     from selenium.webdriver.common.by import By
-    from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service
     from webdriver_manager.chrome import ChromeDriverManager
     import time
@@ -12,30 +11,16 @@ def scrapper():
     import re
 
     with open("db/cookies/cookies.json", "r") as f:
-        data = json.load(f)
-    with open("db/cookies/cookies.pkl", "wb") as f:
-        pickle.dump(data, f)
+        cookies = json.load(f)
 
     url = "https://www.myntra.com/accessories?f=Categories%3AGold%20Coin"
 
-    chrome_options = Options()
-    chrome_options.add_argument("--start-maximized")
-
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), options=chrome_options
-    )
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
     driver.get(url)
 
-    cookies = pickle.load(open("db/cookies/cookies.pkl", "rb"))
-
     for cookie in cookies:
-        cookie["domain"] = ".myntra.com"
-
-        try:
-            driver.add_cookie(cookie)
-        except Exception as e:
-            print(e)
+        driver.add_cookie(cookie)
 
     time.sleep(5)
 
@@ -76,6 +61,5 @@ def scrapper():
             }
         )
 
-    with open("db/products.csv", "w", newline="") as file:
-        df = pd.DataFrame(productName)
-        df.to_csv(file, index=False)
+    df = pd.DataFrame(productName)
+    df.to_parquet("db/products.parquet", index=False)
