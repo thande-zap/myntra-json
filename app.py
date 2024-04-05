@@ -30,7 +30,7 @@ def app():
         df_selection,
         hide_index=True,
         use_container_width=True,
-        height=1000,
+        height=None,
     )
 
 

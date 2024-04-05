@@ -5,7 +5,6 @@ def scrapper():
     from webdriver_manager.chrome import ChromeDriverManager
     import time
     import json
-    import pickle
     import pandas as pd
     import json
     import re
